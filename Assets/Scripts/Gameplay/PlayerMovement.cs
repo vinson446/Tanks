@@ -10,11 +10,18 @@ public class PlayerMovement : TacticsMovement
     void Start()
     {
         Init();
+
+        isPlayer = true;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (!myTurn)
+        {
+            return;
+        }
+
         if (!moving)
         {
             FindSelectableTiles();
@@ -22,7 +29,7 @@ public class PlayerMovement : TacticsMovement
         }
         else
         {
-
+            Move();
         }
     }
 

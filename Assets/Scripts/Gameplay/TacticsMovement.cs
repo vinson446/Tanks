@@ -8,10 +8,10 @@ public class TacticsMovement : MonoBehaviour
     GameObject[] tiles;
     float halfHeight = 0;
 
-    [Header("Tank Stats")]
+    public bool isPlayer;
+    public bool myTurn = false;
     public bool moving = false;
-    public int move = 5;
-    public float jumpHeight = 2;
+    public int moveSpaces = 5;
     public float moveSpeed;
 
     Tile currentTile;
@@ -26,6 +26,8 @@ public class TacticsMovement : MonoBehaviour
         tiles = GameObject.FindGameObjectsWithTag("Tile");
 
         halfHeight = GetComponent<Collider>().bounds.extents.y;
+
+        TurnManager.AddUnit(this);
     }
 
     public Tile GetTargetTile(GameObject target)
@@ -33,7 +35,6 @@ public class TacticsMovement : MonoBehaviour
         RaycastHit hit;
         Tile tile = null;
 
-        // 1 because of tile height
         if (Physics.Raycast(target.transform.position, -Vector3.up, out hit, 1))
         {
             tile = hit.collider.GetComponent<Tile>();
@@ -56,7 +57,7 @@ public class TacticsMovement : MonoBehaviour
         foreach (GameObject tile in tiles)
         {
             Tile t = tile.GetComponent<Tile>();
-            t.FindNeighbors(jumpHeight);
+            t.FindNeighbors(1);
         }
     }
 
@@ -79,7 +80,7 @@ public class TacticsMovement : MonoBehaviour
             selectableTiles.Add(t);
             t.selectable = true;
 
-            if (t.distance < move)
+            if (t.distance < moveSpaces)
             {
                 // add all a tile's neighbors to the queue
                 foreach (Tile tile in t.adjacencyList)
@@ -109,11 +110,88 @@ public class TacticsMovement : MonoBehaviour
         tile.target = true;
         moving = true;
 
+        // end location
         Tile next = tile;
+
+        // when next is null, we reached the start tile
         while (next != null)
         {
+            // push everything to stack in reverse order so we can walk through it
             path.Push(next);
+
+            // go from end location to start location
             next = next.parent;
         }
+    }
+
+    public void Move()
+    {
+        if (path.Count > 0)
+        {
+            Tile t = path.Peek();
+
+            // calculate unit's position on top of the target tile
+            Vector3 target = t.transform.position;
+            target.y += halfHeight + t.GetComponent<Collider>().bounds.extents.y;
+
+            if (Vector3.Distance(transform.position, target) >= 0.05f)
+            {
+                CalculateHeading(target);
+                SetHorizontalVelocity();
+
+                // for tank i have to make heading negative for some reason
+                // locomotion
+                transform.forward = -heading;
+                transform.position += velocity * Time.deltaTime;
+            }
+            else
+            {
+                transform.position = target;
+                path.Pop();
+            }
+        }
+        else
+        {
+            RemoveSelectableTiles();
+            moving = false;
+
+            TurnManager.EndTurn();
+        }
+    }
+
+    protected void RemoveSelectableTiles()
+    {
+        if (currentTile != null)
+        {
+            currentTile.current = false;
+            currentTile = null;
+        }
+
+        foreach (Tile tile in selectableTiles)
+        {
+            tile.Reset();
+        }
+
+        selectableTiles.Clear();
+    }
+
+    void CalculateHeading(Vector3 target)
+    {
+        heading = (target - transform.position).normalized;  
+    }
+
+    void SetHorizontalVelocity()
+    {
+        velocity = heading * moveSpeed;
+    }
+
+    public void BeginTurn()
+    {
+        myTurn = true;
+    }
+
+    public void EndTurn()
+    {
+        myTurn = false;
     }
 }
