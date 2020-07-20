@@ -4,94 +4,65 @@ using UnityEngine;
 
 public class TurnManager : MonoBehaviour
 {
-    // string = tean, list = hold members in a team
-    static Dictionary<string, List<TacticsMovement>> units = new Dictionary<string, List<TacticsMovement>>();
-    static Queue<string> turnKey = new Queue<string>();
-    static Queue<TacticsMovement> turnTeam = new Queue<TacticsMovement>();
+    public PlayerMovement[] playerTeam = new PlayerMovement[3];
+    public EnemyMovement[] enemyTeam;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public static bool allyTeamTurn = true;
+    public static bool allyUnitIsMoving = false;
+    public int allyUnitsFinished = 0;
+    public int enemyUnitsFinished = 0;
 
-    // Update is called once per frame
-    void Update()
+    public void AllyUnitEndTurn()
     {
-        if (turnTeam.Count == 0)
+        allyUnitsFinished += 1;
+
+        if (allyUnitsFinished == 3)
         {
-            InitTeamTurnQueue();
+            SwitchTeams();
         }
     }
 
-    static void InitTeamTurnQueue()
+    public void EnemyUnitEndTurn()
     {
-        // get first team
-        List<TacticsMovement> teamList = units[turnKey.Peek()];
+        enemyUnitsFinished += 1;
 
-        foreach (TacticsMovement unit in teamList)
+        if (enemyUnitsFinished == enemyTeam.Length)
         {
-            turnTeam.Enqueue(unit);
-        }
-
-        StartTurn();
-    }
-
-    public static void StartTurn()
-    {
-        if (turnTeam.Count > 0)
-        {
-            turnTeam.Peek().BeginTurn();
-        }
-    }
-
-    public static void EndTurn()
-    {
-        TacticsMovement unit = turnTeam.Dequeue();
-        unit.EndTurn();
-
-        if (turnTeam.Count > 0)
-        {
-            StartTurn();
+            SwitchTeams();
         }
         else
         {
-            string team = turnKey.Dequeue();
-            turnKey.Enqueue(team);
-            InitTeamTurnQueue();
+            DoNextEnemyTurn();
         }
     }
 
-    public static void AddUnit(TacticsMovement unit)
+    public void DoNextEnemyTurn()
     {
-        List<TacticsMovement> list;
+        enemyTeam[enemyUnitsFinished].BeginTurn(enemyTeam[enemyUnitsFinished]);
+    }
 
-        if (!units.ContainsKey(unit.tag))
+    public void SwitchTeams()
+    {
+        if (allyUnitsFinished == 3)
         {
-            // create team
-            list = new List<TacticsMovement>();
-            units[unit.tag] = list;
-
-            // add new team to turn queue
-            if (!turnKey.Contains(unit.tag))
+            allyTeamTurn = false;
+            foreach (PlayerMovement p in playerTeam)
             {
-                turnKey.Enqueue(unit.tag);
+                p.isSelected = false;
             }
+
+            enemyTeam[0].BeginTurn(enemyTeam[0]);
         }
         else
         {
-            list = units[unit.tag];
+            foreach (EnemyMovement e in enemyTeam)
+            {
+                e.EndTurn(e);
+            }
+            allyTeamTurn = true;
         }
 
-        list.Add(unit);
-    }
-
-    public static void RemoveUnit(TacticsMovement unit)
-    {
-        List<TacticsMovement> list;
-
-        list = units[unit.tag];
-
-        list.Remove(unit);
+        allyUnitsFinished = 0;
+        enemyUnitsFinished = 0;
     }
 }
