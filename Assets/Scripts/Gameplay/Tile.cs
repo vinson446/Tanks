@@ -14,9 +14,13 @@ public class Tile : MonoBehaviour
     // needed for BFS (breadth first search)
     public bool visited = false;
     public Tile parent = null;
-
     // add to BFS- restrict player movement to player movement range
     public int distance = 0;
+
+    // for A*
+    public float f = 0; // cost- g + h
+    public float g = 0; // cost- parent to current tile
+    public float h = 0; // cost- current tile to destination
 
     // Start is called before the first frame update
     void Start()
@@ -56,20 +60,22 @@ public class Tile : MonoBehaviour
         visited = false;
         parent = null;
         distance = 0;
+
+        f = g = h = 0;
     }
 
-    public void FindNeighbors(float jumpHeight)
+    public void FindNeighbors(float jumpHeight, Tile target)
     {
         Reset();
 
-        CheckTile(Vector3.forward, jumpHeight);
-        CheckTile(-Vector3.forward, jumpHeight);
-        CheckTile(Vector3.right, jumpHeight);
-        CheckTile(-Vector3.right, jumpHeight);
+        CheckTile(Vector3.forward, jumpHeight, target);
+        CheckTile(-Vector3.forward, jumpHeight, target);
+        CheckTile(Vector3.right, jumpHeight, target);
+        CheckTile(-Vector3.right, jumpHeight, target);
     }
 
     // for adjacency list
-    public void CheckTile(Vector3 direction, float jumpHeight)
+    public void CheckTile(Vector3 direction, float jumpHeight, Tile target)
     {
         Vector3 halfExtents = new Vector3(transform.localScale.x / 4, jumpHeight, transform.localScale.y / 4);
         Collider[] colliders = Physics.OverlapBox(transform.position + direction, halfExtents);
@@ -83,7 +89,7 @@ public class Tile : MonoBehaviour
                 RaycastHit hit;
 
                 // check if something is on the walkable tile
-                if (!Physics.Raycast(tile.transform.position, Vector3.up, out hit, 1))
+                if (!Physics.Raycast(tile.transform.position, Vector3.up, out hit, 1) || (tile == target))
                 {
                     adjacencyList.Add(tile);
                 }

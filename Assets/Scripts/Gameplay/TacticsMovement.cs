@@ -21,6 +21,9 @@ public class TacticsMovement : MonoBehaviour
     Vector3 velocity = new Vector3();
     Vector3 heading = new Vector3();
 
+    // A*
+    public Tile actualTargetTile;
+
     protected void Init()
     {
         tiles = GameObject.FindGameObjectsWithTag("Tile");
@@ -49,7 +52,7 @@ public class TacticsMovement : MonoBehaviour
         currentTile.current = true;
     }
 
-    public void ComputeAdjacencyList()
+    public void ComputeAdjacencyList(Tile target)
     {
         // if tiles can be created or destroyed, refind tiles
         // tiles = GameObject.FindGameObjectsWithTag("Tile");
@@ -57,14 +60,14 @@ public class TacticsMovement : MonoBehaviour
         foreach (GameObject tile in tiles)
         {
             Tile t = tile.GetComponent<Tile>();
-            t.FindNeighbors(1);
+            t.FindNeighbors(1, target);
         }
     }
 
     // BFS- breadth first search to find selectable tiles
     public void FindSelectableTiles()
     {
-        ComputeAdjacencyList();
+        ComputeAdjacencyList(null);
         GetCurrentTile();
 
         Queue<Tile> process = new Queue<Tile>();
@@ -183,6 +186,117 @@ public class TacticsMovement : MonoBehaviour
     void SetHorizontalVelocity()
     {
         velocity = heading * moveSpeed;
+    }
+
+    protected Tile FindLowestF(List<Tile> list)
+    {
+        Tile lowest = list[0];
+
+        foreach (Tile t in list)
+        {
+            if (t.f < lowest.f)
+            {
+                lowest = t;
+            }
+        }
+
+        list.Remove(lowest);
+
+        return lowest;
+    }
+
+    // stand next to target tile AND check movement range based on enemy's move spaces
+    protected Tile FindEndTile(Tile t)
+    {
+        Stack<Tile> tempPath = new Stack<Tile>();
+
+        // created path from destination tile's parent to start tile
+        Tile next = t.parent;
+        while (next != null)
+        {
+            tempPath.Push(next);
+
+            next = next.parent;
+        }
+
+        if (tempPath.Count <= moveSpaces)
+        {
+            return t.parent;
+        }
+
+        // out of movement range
+        Tile endTile = null;
+        for (int i = 0; i <= moveSpaces; i++)
+        {
+            endTile = tempPath.Pop();
+        }
+
+        return endTile;
+    }
+
+    // for enemy ai
+    protected void FindPath(Tile target)
+    {
+        ComputeAdjacencyList(target);
+        GetCurrentTile();
+
+        List<Tile> openList = new List<Tile>();
+        List<Tile> closedList = new List<Tile>();
+
+        openList.Add(currentTile);
+        // leave currentTile parent == null
+
+        currentTile.h = Vector3.Distance(currentTile.transform.position, target.transform.position);
+        currentTile.f = currentTile.h;
+
+        while (openList.Count > 0)
+        {
+            Tile t = FindLowestF(openList);
+
+            closedList.Add(t);
+
+            if (t == target)
+            {
+                actualTargetTile = FindEndTile(t);
+                MoveToTile(actualTargetTile);
+                return;
+            }
+
+            foreach (Tile tile in t.adjacencyList)
+            {
+                // do nothing, already processed
+                if (closedList.Contains(tile))
+                {
+                    
+                }
+                // found two paths to the same tile, need to see which path is faster by comparing g scores
+                else if (openList.Contains(tile))
+                {
+                    float tempG = t.g + Vector3.Distance(tile.transform.position, transform.position);
+
+                    if (tempG < tile.g)
+                    {
+                        tile.parent = t;
+
+                        tile.g = tempG;
+                        tile.f = tile.g + tile.h;
+                    }
+                }
+                // never processed tile, add tile to open list
+                else
+                {
+                    tile.parent = t;
+
+                    // distance from the beginning
+                    tile.g = t.g + Vector3.Distance(tile.transform.position, t.transform.position);
+                    // distance to the end
+                    tile.h = Vector3.Distance(tile.transform.position, target.transform.position);
+                    tile.f = tile.g + tile.h;
+
+                    openList.Add(tile);
+                }
+            }
+        }
     }
 
     public void BeginTurn()
