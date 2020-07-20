@@ -8,9 +8,8 @@ public class TacticsMovement : MonoBehaviour
     GameObject[] tiles;
     float halfHeight = 0;
 
-    public bool isPlayer;
-    public bool myTurn = false;
-    public bool moving = false;
+    public bool isAlly = false;
+    public bool isMoving = false;
     public int moveSpaces = 5;
     public float moveSpeed;
 
@@ -22,15 +21,13 @@ public class TacticsMovement : MonoBehaviour
     Vector3 heading = new Vector3();
 
     // A*
-    public Tile actualTargetTile;
+    protected Tile actualTargetTile;
 
     protected void Init()
     {
         tiles = GameObject.FindGameObjectsWithTag("Tile");
 
         halfHeight = GetComponent<Collider>().bounds.extents.y;
-
-        TurnManager.AddUnit(this);
     }
 
     public Tile GetTargetTile(GameObject target)
@@ -111,7 +108,7 @@ public class TacticsMovement : MonoBehaviour
         path.Clear();
 
         tile.target = true;
-        moving = true;
+        isMoving = true;
 
         // end location
         Tile next = tile;
@@ -156,9 +153,18 @@ public class TacticsMovement : MonoBehaviour
         else
         {
             RemoveSelectableTiles();
-            moving = false;
+            isMoving = false;
 
-            TurnManager.EndTurn();
+            if (!isAlly)
+            {
+                EnemyMovement enemyMovement = GetComponent<EnemyMovement>();
+                EnemyCombat enemyCombat = GetComponent<EnemyCombat>();
+                enemyCombat.Attack(enemyMovement);
+            }
+            else
+            {
+                TurnManager.allyUnitIsMoving = false;
+            }
         }
     }
 
@@ -299,13 +305,14 @@ public class TacticsMovement : MonoBehaviour
         }
     }
 
-    public void BeginTurn()
+    // only used for enemy ai
+    public void BeginTurn(EnemyMovement e)
     {
-        myTurn = true;
+        e.myTurn = true;
     }
 
-    public void EndTurn()
+    public void EndTurn(EnemyMovement e)
     {
-        myTurn = false;
+        e.myTurn = false;
     }
 }

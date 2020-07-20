@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NPCMovement : TacticsMovement
+public class EnemyMovement : TacticsMovement
 {
     GameObject target;
+    public bool myTurn = false;
 
     // Start is called before the first frame update
     void Start()
@@ -20,7 +21,7 @@ public class NPCMovement : TacticsMovement
             return;
         }
 
-        if (!moving)
+        if (!isMoving)
         {
             FindNearestTarget();
             CalculatePath();

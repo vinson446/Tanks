@@ -5,35 +5,65 @@ using UnityEngine;
 public class PlayerMovement : TacticsMovement
 {
     Touch touch;
+    public bool isSelected;
+
+    TurnManager turnManager;
 
     // Start is called before the first frame update
     void Start()
     {
         Init();
-
-        isPlayer = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!myTurn)
-        {
-            return;
-        }
+        if (TurnManager.allyTeamTurn && !TurnManager.allyUnitIsMoving)
+            SelectUnitWithTouch();
 
-        if (!moving)
+        if (isSelected)
         {
-            FindSelectableTiles();
-            CheckTouch();
-        }
-        else
-        {
-            Move();
+            if (!isMoving)
+            {
+                FindSelectableTiles();
+                CheckTileTouchToMove();
+            }
+            else
+            {
+                TurnManager.allyUnitIsMoving = true;
+                Move();
+            }
         }
     }
 
-    void CheckTouch()
+    void SelectUnitWithTouch()
+    {
+        if (Input.touchCount > 0)
+        {
+            touch = Input.GetTouch(0);
+
+            if (touch.phase == TouchPhase.Ended)
+            {
+                Ray ray = Camera.main.ScreenPointToRay(touch.position);
+
+                RaycastHit hit;
+                if (Physics.Raycast(ray, out hit))
+                {
+                    if (hit.collider.tag == "Ally Tank")
+                    {
+                        PlayerMovement selectedUnit = hit.collider.GetComponentInParent<PlayerMovement>();
+                        if (selectedUnit != null)
+                        {
+                            isSelected = false;
+                            selectedUnit.isSelected = true;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    void CheckTileTouchToMove()
     {
         if (Input.touchCount > 0)
         {
@@ -55,14 +85,6 @@ public class PlayerMovement : TacticsMovement
                             // move target
                             MoveToTile(t);
                         }
-                    }
-                    else if (hit.collider.tag == "Ally Tank")
-                    {
-
-                    }
-                    else if (hit.collider.tag == "Enemy Tank")
-                    {
-
                     }
                 }
             }
