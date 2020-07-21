@@ -103,7 +103,7 @@ public class TacticsMovement : MonoBehaviour
         }
     }
 
-    public void MoveToTile(Tile tile)
+    public void CreatePathToTargetTile(Tile tile)
     {
         path.Clear();
 
@@ -168,7 +168,7 @@ public class TacticsMovement : MonoBehaviour
         }
     }
 
-    protected void RemoveSelectableTiles()
+    public void RemoveSelectableTiles()
     {
         if (currentTile != null)
         {
@@ -264,7 +264,7 @@ public class TacticsMovement : MonoBehaviour
             if (t == target)
             {
                 actualTargetTile = FindEndTile(t);
-                MoveToTile(actualTargetTile);
+                CreatePathToTargetTile(actualTargetTile);
                 return;
             }
 

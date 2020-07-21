@@ -4,13 +4,21 @@ using UnityEngine;
 
 public class TurnManager : MonoBehaviour
 {
-    public PlayerMovement[] playerTeam = new PlayerMovement[3];
+    public PlayerMovement[] playerTeam;
     public EnemyMovement[] enemyTeam;
 
     public static bool allyTeamTurn = true;
+    public static bool alliesCanMoveNow = false;
     public static bool allyUnitIsMoving = false;
-    public int allyUnitsFinished = 0;
-    public int enemyUnitsFinished = 0;
+    public static int allyUnitsFinished = 0;
+    public static int enemyUnitsFinished = 0;
+
+    TurnDisplay turnDisplay;
+
+    private void Start()
+    {
+        turnDisplay = FindObjectOfType<TurnDisplay>();
+    }
 
     public void AllyUnitEndTurn()
     {
@@ -43,26 +51,6 @@ public class TurnManager : MonoBehaviour
 
     public void SwitchTeams()
     {
-        if (allyUnitsFinished == 3)
-        {
-            allyTeamTurn = false;
-            foreach (PlayerMovement p in playerTeam)
-            {
-                p.isSelected = false;
-            }
-
-            enemyTeam[0].BeginTurn(enemyTeam[0]);
-        }
-        else
-        {
-            foreach (EnemyMovement e in enemyTeam)
-            {
-                e.EndTurn(e);
-            }
-            allyTeamTurn = true;
-        }
-
-        allyUnitsFinished = 0;
-        enemyUnitsFinished = 0;
+        turnDisplay.UpdateTurn();
     }
 }
