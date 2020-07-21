@@ -6,7 +6,8 @@ public class PlayerMovement : TacticsMovement
 {
     Touch touch;
 
-    public bool isSelected;
+    public bool isSelected = false;
+    public bool hasMovedAlready = false;
 
     // Start is called before the first frame update
     void Start()
@@ -19,7 +20,7 @@ public class PlayerMovement : TacticsMovement
     {
         if (isSelected)
         {
-            if (!isMoving)
+            if (!isMoving & !hasMovedAlready)
             {
                 FindSelectableTiles();
                 CheckTileTouchToMove();

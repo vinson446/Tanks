@@ -23,6 +23,8 @@ public class TacticsMovement : MonoBehaviour
     // A*
     protected Tile actualTargetTile;
 
+    // references
+
     protected void Init()
     {
         tiles = GameObject.FindGameObjectsWithTag("Tile");
@@ -164,6 +166,9 @@ public class TacticsMovement : MonoBehaviour
             else
             {
                 TurnManager.allyUnitIsMoving = false;
+
+                PlayerMovement player = GetComponent<PlayerMovement>();
+                player.hasMovedAlready = true;
             }
         }
     }

@@ -8,20 +8,24 @@ public class SelectAllyUnit : MonoBehaviour
 
     public PlayerMovement selectedUnit;
 
+    CameraManager cameraManager;
+    GameDisplay gameDisplay;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        cameraManager = FindObjectOfType<CameraManager>();
+        gameDisplay = FindObjectOfType<GameDisplay>();
     }
 
     // Update is called once per frame
     void Update()
     {
         if (TurnManager.alliesCanMoveNow && !TurnManager.allyUnitIsMoving)
-            SelectWithTouch();
+            SelectAllyWithTouch();
     }
 
-    void SelectWithTouch()
+    void SelectAllyWithTouch()
     {
         if (Input.touchCount > 0)
         {
@@ -47,13 +51,19 @@ public class SelectAllyUnit : MonoBehaviour
                         {
                             selectedUnit.isSelected = true;
                         }
+
+                        // if ally moved already, camera doesnt look at it
+                        if (!selectedUnit.hasMovedAlready)
+                            cameraManager.FocusOnTarget(selectedUnit.gameObject.transform);
                     }
-                    else if (hit.collider.tag == "Tile")
+                    else if (!selectedUnit.hasMovedAlready && hit.collider.tag == "Tile")
                     {
                         if (!hit.collider.GetComponent<Tile>().selectable && selectedUnit != null)
                         {
                             selectedUnit.isSelected = false;
                             selectedUnit.RemoveSelectableTiles();
+
+                            cameraManager.LookAtGameWorld();
                         }
                     }
                 }

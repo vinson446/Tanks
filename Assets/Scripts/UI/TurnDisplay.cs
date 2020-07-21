@@ -37,7 +37,7 @@ public class TurnDisplay : MonoBehaviour
 
     public void UpdateTurn()
     {
-        StartCoroutine(DisplayTurnCoroutine());
+        StartCoroutine(UpdateDisplayTurnCoroutine());
     }
 
     void DisplayTurn()
@@ -63,7 +63,7 @@ public class TurnDisplay : MonoBehaviour
         turnText.transform.localScale = new Vector3(turnTextStartScale, turnTextStartScale, turnTextStartScale);
     }
 
-    IEnumerator DisplayTurnCoroutine()
+    IEnumerator UpdateDisplayTurnCoroutine()
     {
         // update turn on backend (restrict touch/movement and clear count for turn switching)
         if (TurnManager.allyUnitsFinished == 3)
@@ -74,6 +74,7 @@ public class TurnDisplay : MonoBehaviour
             foreach (PlayerMovement p in turnManager.playerTeam)
             {
                 p.isSelected = false;
+                p.hasMovedAlready = false;
             }
         }
         else

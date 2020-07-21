@@ -5,7 +5,7 @@ using UnityEngine;
 public class TurnManager : MonoBehaviour
 {
     public PlayerMovement[] playerTeam;
-    public EnemyMovement[] enemyTeam;
+    public List<EnemyMovement> enemyTeam;
 
     public static bool allyTeamTurn = true;
     public static bool alliesCanMoveNow = false;
@@ -34,7 +34,7 @@ public class TurnManager : MonoBehaviour
     {
         enemyUnitsFinished += 1;
 
-        if (enemyUnitsFinished == enemyTeam.Length)
+        if (enemyUnitsFinished == enemyTeam.Count)
         {
             SwitchTeams();
         }
