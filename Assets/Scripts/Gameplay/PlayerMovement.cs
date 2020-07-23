@@ -6,8 +6,10 @@ public class PlayerMovement : TacticsMovement
 {
     Touch touch;
 
+    [Header("Game Manager Flags")]
     public bool isSelected = false;
     public bool hasMovedAlready = false;
+    public bool finishedTurn = false;
 
     // Start is called before the first frame update
     void Start()
@@ -50,7 +52,7 @@ public class PlayerMovement : TacticsMovement
                     {
                         Tile t = hit.collider.GetComponent<Tile>();
 
-                        if (t.selectable)
+                        if (t.selectable && !t.current)
                         {
                             // move target
                             CreatePathToTargetTile(t);
@@ -59,5 +61,10 @@ public class PlayerMovement : TacticsMovement
                 }
             }
         }
+    }
+
+    public void Attack()
+    {
+
     }
 }

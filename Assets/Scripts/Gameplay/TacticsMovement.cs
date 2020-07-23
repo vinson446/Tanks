@@ -24,12 +24,15 @@ public class TacticsMovement : MonoBehaviour
     protected Tile actualTargetTile;
 
     // references
+    GameDisplay gameDisplay;
 
     protected void Init()
     {
         tiles = GameObject.FindGameObjectsWithTag("Tile");
 
         halfHeight = GetComponent<Collider>().bounds.extents.y;
+
+        gameDisplay = FindObjectOfType<GameDisplay>();
     }
 
     public Tile GetTargetTile(GameObject target)
@@ -169,6 +172,8 @@ public class TacticsMovement : MonoBehaviour
 
                 PlayerMovement player = GetComponent<PlayerMovement>();
                 player.hasMovedAlready = true;
+
+                gameDisplay.DisplayUnitActions();
             }
         }
     }
@@ -237,7 +242,7 @@ public class TacticsMovement : MonoBehaviour
 
         // out of movement range
         Tile endTile = null;
-        for (int i = 0; i <= moveSpaces; i++)
+        for (int i = 0; i <= Random.Range(0, moveSpaces); i++)
         {
             endTile = tempPath.Pop();
         }

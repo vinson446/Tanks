@@ -22,10 +22,10 @@ public class SelectAllyUnit : MonoBehaviour
     void Update()
     {
         if (TurnManager.alliesCanMoveNow && !TurnManager.allyUnitIsMoving)
-            SelectAllyWithTouch();
+            SelectWithTouch();
     }
 
-    void SelectAllyWithTouch()
+    void SelectWithTouch()
     {
         if (Input.touchCount > 0)
         {
@@ -40,30 +40,48 @@ public class SelectAllyUnit : MonoBehaviour
                 {
                     if (hit.collider.tag == "Ally Tank")
                     {
-                        GameObject[] allies = GameObject.FindGameObjectsWithTag("Ally Tank");
-                        foreach(GameObject a in allies)
+                        // first time to select unit
+                        if (selectedUnit == null)
                         {
-                            a.GetComponent<PlayerMovement>().isSelected = false;
+                            selectedUnit = hit.collider.GetComponentInParent<PlayerMovement>();
+                            if (selectedUnit != null)
+                            {
+                                selectedUnit.isSelected = true;
+                            }
                         }
-
-                        selectedUnit = hit.collider.GetComponentInParent<PlayerMovement>();
-                        if (selectedUnit != null)
+                        else
                         {
-                            selectedUnit.isSelected = true;
-                        }
+                            // can only select ally units before movement finishes
+                            if (selectedUnit.hasMovedAlready)
+                            {
 
-                        // if ally moved already, camera doesnt look at it
-                        if (!selectedUnit.hasMovedAlready)
-                            cameraManager.FocusOnTarget(selectedUnit.gameObject.transform);
+                            }
+                            else
+                            {
+                                selectedUnit.isSelected = false;
+
+                                selectedUnit = hit.collider.GetComponentInParent<PlayerMovement>();
+                                if (selectedUnit != null)
+                                {
+                                    selectedUnit.isSelected = true;
+                                }
+                            }
+                        }
+                        cameraManager.FocusOnTarget(selectedUnit.gameObject.transform);
                     }
-                    else if (!selectedUnit.hasMovedAlready && hit.collider.tag == "Tile")
+                    else if (hit.collider.tag == "Tile")
                     {
                         if (!hit.collider.GetComponent<Tile>().selectable && selectedUnit != null)
                         {
-                            selectedUnit.isSelected = false;
-                            selectedUnit.RemoveSelectableTiles();
+                            if (!selectedUnit.hasMovedAlready)
+                            {
+                                selectedUnit.isSelected = false;
+                                selectedUnit.RemoveSelectableTiles();
 
-                            cameraManager.LookAtGameWorld();
+                                selectedUnit = null;
+
+                                cameraManager.LookAtGameWorld();
+                            }
                         }
                     }
                 }
