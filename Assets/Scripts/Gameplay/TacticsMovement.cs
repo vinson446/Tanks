@@ -131,6 +131,11 @@ public class TacticsMovement : MonoBehaviour
 
     public void Move()
     {
+        if (gameDisplay.actionsPanel.activeInHierarchy)
+        {
+            return;
+        }
+
         if (path.Count > 0)
         {
             Tile t = path.Peek();
@@ -171,9 +176,10 @@ public class TacticsMovement : MonoBehaviour
                 TurnManager.allyUnitIsMoving = false;
 
                 PlayerMovement player = GetComponent<PlayerMovement>();
+
                 player.hasMovedAlready = true;
 
-                gameDisplay.DisplayUnitActions();
+                gameDisplay.DisplayUnitActions(player.tankNum);
             }
         }
     }
@@ -242,7 +248,7 @@ public class TacticsMovement : MonoBehaviour
 
         // out of movement range
         Tile endTile = null;
-        for (int i = 0; i <= Random.Range(0, moveSpaces); i++)
+        for (int i = 0; i <= Random.Range(1, moveSpaces); i++)
         {
             endTile = tempPath.Pop();
         }

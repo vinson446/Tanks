@@ -10,12 +10,14 @@ public class SelectAllyUnit : MonoBehaviour
 
     CameraManager cameraManager;
     GameDisplay gameDisplay;
+    PlayerCombatManager playerCombatManager;
 
     // Start is called before the first frame update
     void Start()
     {
         cameraManager = FindObjectOfType<CameraManager>();
         gameDisplay = FindObjectOfType<GameDisplay>();
+        playerCombatManager = FindObjectOfType<PlayerCombatManager>();
     }
 
     // Update is called once per frame
@@ -51,8 +53,8 @@ public class SelectAllyUnit : MonoBehaviour
                         }
                         else
                         {
-                            // can only select ally units before movement finishes
-                            if (selectedUnit.hasMovedAlready)
+                            // can only select ally units before selected unit moves
+                            if (selectedUnit.hasMovedAlready && !selectedUnit.finishedTurn)
                             {
 
                             }
@@ -67,6 +69,9 @@ public class SelectAllyUnit : MonoBehaviour
                                 }
                             }
                         }
+
+                        playerCombatManager.UpdateTankDetails(selectedUnit.tankNum);
+
                         cameraManager.FocusOnTarget(selectedUnit.gameObject.transform);
                     }
                     else if (hit.collider.tag == "Tile")

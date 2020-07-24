@@ -7,6 +7,7 @@ public class PlayerMovement : TacticsMovement
     Touch touch;
 
     [Header("Game Manager Flags")]
+    public int tankNum;
     public bool isSelected = false;
     public bool hasMovedAlready = false;
     public bool finishedTurn = false;
@@ -22,12 +23,12 @@ public class PlayerMovement : TacticsMovement
     {
         if (isSelected)
         {
-            if (!isMoving & !hasMovedAlready)
+            if (!isMoving && !hasMovedAlready)
             {
                 FindSelectableTiles();
                 CheckTileTouchToMove();
             }
-            else
+            else if (!hasMovedAlready)
             {
                 TurnManager.allyUnitIsMoving = true;
                 Move();
@@ -61,10 +62,5 @@ public class PlayerMovement : TacticsMovement
                 }
             }
         }
-    }
-
-    public void Attack()
-    {
-
     }
 }

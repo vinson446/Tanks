@@ -75,6 +75,7 @@ public class TurnDisplay : MonoBehaviour
             {
                 p.isSelected = false;
                 p.hasMovedAlready = false;
+                p.finishedTurn = false;
             }
         }
         else

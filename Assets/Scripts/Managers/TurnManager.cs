@@ -20,9 +20,10 @@ public class TurnManager : MonoBehaviour
         turnDisplay = FindObjectOfType<TurnDisplay>();
     }
 
-    public void AllyUnitEndTurn()
+    public void AllyUnitEndTurn(int currentTank)
     {
         allyUnitsFinished += 1;
+        playerTeam[currentTank].finishedTurn = true;
 
         if (allyUnitsFinished == 3)
         {
