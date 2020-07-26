@@ -21,7 +21,7 @@ public class SelectAllyUnit : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if (TurnManager.alliesCanMoveNow && !TurnManager.allyUnitIsMoving)
             SelectWithTouch();
@@ -78,7 +78,8 @@ public class SelectAllyUnit : MonoBehaviour
                     {
                         if (!hit.collider.GetComponent<Tile>().selectable && selectedUnit != null)
                         {
-                            if (!selectedUnit.hasMovedAlready)
+                            // if unit hasnt moved yet or if unit has already finished its turn
+                            if (!selectedUnit.hasMovedAlready || selectedUnit.finishedTurn)
                             {
                                 selectedUnit.isSelected = false;
                                 selectedUnit.RemoveSelectableTiles();

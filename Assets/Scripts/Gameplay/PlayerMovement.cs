@@ -19,7 +19,7 @@ public class PlayerMovement : TacticsMovement
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if (isSelected)
         {

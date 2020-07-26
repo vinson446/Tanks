@@ -14,7 +14,7 @@ public class EnemyMovement : TacticsMovement
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if (!myTurn)
         {

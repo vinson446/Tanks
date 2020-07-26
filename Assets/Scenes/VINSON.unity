@@ -8341,7 +8341,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isAlly: 0
   isMoving: 0
-  moveSpaces: 3
+  moveSpaces: 5
   moveSpeed: 2
   myTurn: 0
 --- !u!33 &945210506
@@ -8583,7 +8583,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isAlly: 0
   isMoving: 0
-  moveSpaces: 3
+  moveSpaces: 5
   moveSpeed: 2
   myTurn: 0
 --- !u!33 &954825741
@@ -10890,7 +10890,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1094273541}
-  m_LocalRotation: {x: 0.42896786, y: 0.000000015542867, z: -0.000000007380985, w: 0.9033198}
+  m_LocalRotation: {x: 0.42896786, y: -0.000000015542865, z: 0.0000000073809834, w: 0.9033198}
   m_LocalPosition: {x: 2, y: 5.34, z: -2.8399985}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -14341,7 +14341,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1459652093
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18645,6 +18645,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameCamera: {fileID: 1459652092}
   focusCamera: {fileID: 1094273541}
+  cameraMovementDivider: 5
+  xMinBounds: 4
+  xMaxBounds: 7
+  zMinBounds: -5
+  zMaxBounds: -2
 --- !u!4 &1731457362
 Transform:
   m_ObjectHideFlags: 0
@@ -21247,8 +21252,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2003119973}
-  m_LocalRotation: {x: 0.42896786, y: 0.000000015542867, z: -0.000000007380985, w: 0.9033198}
-  m_LocalPosition: {x: 2, y: 5.34, z: -2.8399985}
+  m_LocalRotation: {x: 0.29381004, y: 0, z: 0, w: 0.95586383}
+  m_LocalPosition: {x: 5.59, y: 6.7, z: -5.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -22211,7 +22216,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isAlly: 0
   isMoving: 0
-  moveSpaces: 3
+  moveSpaces: 5
   moveSpeed: 2
   myTurn: 0
 --- !u!33 &2062817550

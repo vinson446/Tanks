@@ -32,7 +32,7 @@ public class GameDisplay : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if (isInActionsPanel)
             UpdateWeaponConfiguration();
