@@ -248,7 +248,7 @@ public class TacticsMovement : MonoBehaviour
 
         // out of movement range
         Tile endTile = null;
-        for (int i = 0; i <= Random.Range(1, moveSpaces); i++)
+        for (int i = 0; i <= Random.Range(1, moveSpaces + 1); i++)
         {
             endTile = tempPath.Pop();
         }

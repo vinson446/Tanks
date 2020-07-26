@@ -42,6 +42,7 @@ public class PlayerCombatManager : MonoBehaviour
 
     public void Attack()
     {
+        // backend
         gameDisplay.TurnOffUnitActions();
 
         maxPower -= (int)gameDisplay.powerSlider.value;
@@ -50,11 +51,13 @@ public class PlayerCombatManager : MonoBehaviour
         listOfHorizontalAngles[currentTank] = (int)gameDisplay.horizontalAngleSlider.value;
         listOfVerticalAngles[currentTank] = (int)gameDisplay.verticalAngleSlider.value;
 
+        // frontend
         turnManager.AllyUnitEndTurn(currentTank);
     }
 
     public void Standby()
     {
+        // backend
         gameDisplay.TurnOffUnitActions();
 
         if (maxPower + 25 <= 100)
@@ -69,6 +72,9 @@ public class PlayerCombatManager : MonoBehaviour
         listOfMaxPowers[currentTank] = maxPower;
         listOfHorizontalAngles[currentTank] = (int)gameDisplay.horizontalAngleSlider.value;
         listOfVerticalAngles[currentTank] = (int)gameDisplay.verticalAngleSlider.value;
+
+        // frontend
+
 
         turnManager.AllyUnitEndTurn(currentTank);
     }
