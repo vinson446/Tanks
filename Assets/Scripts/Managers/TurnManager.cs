@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class TurnManager : MonoBehaviour
 {
-    public PlayerMovement[] playerTeam;
+    public List<PlayerMovement> playerTeam;
     public List<EnemyMovement> enemyTeam;
 
-    public static bool allyTeamTurn = true;
-    public static bool alliesCanMoveNow = false;
-    public static bool allyUnitIsMoving = false;
-    public static int allyUnitsFinished = 0;
-    public static int enemyUnitsFinished = 0;
+    public bool allyTeamTurn = true;
+    public bool alliesCanMoveNow = false;
+    public bool allyUnitIsMoving = false;
+    public int allyUnitsFinished = 0;
+    public int enemyUnitsFinished = 0;
 
     TurnDisplay turnDisplay;
 
@@ -25,7 +25,7 @@ public class TurnManager : MonoBehaviour
         allyUnitsFinished += 1;
         playerTeam[currentTank].finishedTurn = true;
 
-        if (allyUnitsFinished == 3)
+        if (allyUnitsFinished == playerTeam.Count)
         {
             SwitchTeams();
         }

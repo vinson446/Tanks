@@ -42,7 +42,7 @@ public class TurnDisplay : MonoBehaviour
 
     void DisplayTurn()
     {
-        if (TurnManager.allyTeamTurn)
+        if (turnManager.allyTeamTurn)
         {
             turnText.text = "PLAYER TURN";
             turnText.color = Color.green;
@@ -66,10 +66,10 @@ public class TurnDisplay : MonoBehaviour
     IEnumerator UpdateDisplayTurnCoroutine()
     {
         // update turn on backend (restrict touch/movement and clear count for turn switching)
-        if (TurnManager.allyUnitsFinished == 3)
+        if (turnManager.allyUnitsFinished == turnManager.playerTeam.Count)
         {
-            TurnManager.allyTeamTurn = false;
-            TurnManager.alliesCanMoveNow = false;
+            turnManager.allyTeamTurn = false;
+            turnManager.alliesCanMoveNow = false;
 
             foreach (PlayerMovement p in turnManager.playerTeam)
             {
@@ -80,15 +80,11 @@ public class TurnDisplay : MonoBehaviour
         }
         else
         {
-            TurnManager.allyTeamTurn = true;
-
-            foreach (EnemyMovement e in turnManager.enemyTeam)
-            {
-                e.EndTurn(e);
-            }
+            turnManager.allyTeamTurn = true;
         }
-        TurnManager.allyUnitsFinished = 0;
-        TurnManager.enemyUnitsFinished = 0;
+
+        turnManager.allyUnitsFinished = 0;
+        turnManager.enemyUnitsFinished = 0;
 
         DisplayTurn();
 
@@ -97,9 +93,9 @@ public class TurnDisplay : MonoBehaviour
         ClearDisplayTurn();
         
         // enable action again
-        if (TurnManager.allyTeamTurn)
+        if (turnManager.allyTeamTurn)
         {
-            TurnManager.alliesCanMoveNow = true;
+            turnManager.alliesCanMoveNow = true;
         }
         else
         {

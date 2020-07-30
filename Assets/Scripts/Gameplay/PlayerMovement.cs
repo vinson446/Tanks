@@ -12,6 +12,8 @@ public class PlayerMovement : TacticsMovement
     public bool hasMovedAlready = false;
     public bool finishedTurn = false;
 
+    // references
+
     // Start is called before the first frame update
     void Start()
     {
@@ -30,7 +32,7 @@ public class PlayerMovement : TacticsMovement
             }
             else if (!hasMovedAlready)
             {
-                TurnManager.allyUnitIsMoving = true;
+                turnManager.allyUnitIsMoving = true;
                 Move();
             }
         }

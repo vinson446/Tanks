@@ -8,9 +8,11 @@ public class SelectAllyUnit : MonoBehaviour
 
     public PlayerMovement selectedUnit;
 
+    // references
     CameraManager cameraManager;
     GameDisplay gameDisplay;
     PlayerCombatManager playerCombatManager;
+    TurnManager turnManager;
 
     // Start is called before the first frame update
     void Start()
@@ -18,12 +20,13 @@ public class SelectAllyUnit : MonoBehaviour
         cameraManager = FindObjectOfType<CameraManager>();
         gameDisplay = FindObjectOfType<GameDisplay>();
         playerCombatManager = FindObjectOfType<PlayerCombatManager>();
+        turnManager = FindObjectOfType<TurnManager>();
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (TurnManager.alliesCanMoveNow && !TurnManager.allyUnitIsMoving)
+        if (turnManager.alliesCanMoveNow && !turnManager.allyUnitIsMoving)
             SelectWithTouch();
     }
 

@@ -6,22 +6,28 @@ public class EnemyMovement : TacticsMovement
 {
     GameObject target;
     public bool myTurn = false;
+    public bool hasMovedAlready = false;
+
+    CameraManager cameraManager;
+    public bool gotCam = false;
 
     // Start is called before the first frame update
     void Start()
     {
         Init();
+
+        cameraManager = FindObjectOfType<CameraManager>();
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (!myTurn)
+        if (!myTurn || turnManager.allyTeamTurn)
         {
             return;
         }
 
-        if (!isMoving)
+        if (!isMoving && !hasMovedAlready)
         {
             FindNearestTarget();
             CalculatePath();
@@ -31,6 +37,12 @@ public class EnemyMovement : TacticsMovement
         }
         else
         {
+            if (!gotCam)
+            {
+                cameraManager.FocusOnTarget(gameObject.transform);
+                gotCam = true;
+            }
+
             Move();
         }
     }

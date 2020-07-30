@@ -25,6 +25,7 @@ public class TacticsMovement : MonoBehaviour
 
     // references
     GameDisplay gameDisplay;
+    protected TurnManager turnManager;
 
     protected void Init()
     {
@@ -33,6 +34,7 @@ public class TacticsMovement : MonoBehaviour
         halfHeight = GetComponent<Collider>().bounds.extents.y;
 
         gameDisplay = FindObjectOfType<GameDisplay>();
+        turnManager = FindObjectOfType<TurnManager>();
     }
 
     public Tile GetTargetTile(GameObject target)
@@ -168,15 +170,20 @@ public class TacticsMovement : MonoBehaviour
             if (!isAlly)
             {
                 EnemyMovement enemyMovement = GetComponent<EnemyMovement>();
+                enemyMovement.hasMovedAlready = true;
+
                 EnemyCombat enemyCombat = GetComponent<EnemyCombat>();
-                enemyCombat.Attack(enemyMovement);
+                if (!enemyCombat.hasAttacked)
+                {
+                    enemyCombat.Attack(enemyMovement);
+                    enemyCombat.hasAttacked = true;                                                                                                                                                                                 
+                }
             }
             else
             {
-                TurnManager.allyUnitIsMoving = false;
+                turnManager.allyUnitIsMoving = false;
 
                 PlayerMovement player = GetComponent<PlayerMovement>();
-
                 player.hasMovedAlready = true;
 
                 gameDisplay.DisplayUnitActions(player.tankNum);

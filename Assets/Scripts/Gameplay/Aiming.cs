@@ -24,14 +24,14 @@ public class Aiming : MonoBehaviour
 
     public void HorizontalAim()
     {
-        rotatableBody.rotation = Quaternion.Euler(new Vector3(rotatableBody.rotation.x, 
-            gameDisplay.horizontalAngleSlider.value, 
+        rotatableBody.localRotation = Quaternion.Euler(new Vector3(rotatableBody.rotation.x,
+            gameDisplay.horizontalAngleSlider.value,
             rotatableBody.rotation.z));
     }
 
     public void VerticalAim()
     {
-        rotatableTurret.rotation = Quaternion.Euler(new Vector3(gameDisplay.verticalAngleSlider.value,
+        rotatableTurret.localRotation = Quaternion.Euler(new Vector3(gameDisplay.verticalAngleSlider.value,
             rotatableTurret.rotation.y,
             rotatableTurret.rotation.z));
     }

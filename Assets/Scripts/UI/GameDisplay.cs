@@ -11,6 +11,8 @@ public class GameDisplay : MonoBehaviour
     [Header("UI References")]
     public GameObject actionsPanel;
 
+    public TextMeshProUGUI weaponNameText;
+
     public Slider powerSlider;
     public TextMeshProUGUI powerText;
 
@@ -53,8 +55,11 @@ public class GameDisplay : MonoBehaviour
         actionsPanel.SetActive(false);
     }
 
+    // right when player finishes moving
     public void SetWeaponConfiguration(int tankNum)
     {
+        weaponNameText.text = playerCombatManager.listOfWeaponNames[tankNum];
+
         powerSlider.maxValue = playerCombatManager.listOfMaxPowers[tankNum];
         powerSlider.value = 0;
         powerText.text = "0";
@@ -66,6 +71,7 @@ public class GameDisplay : MonoBehaviour
         verticalAngleText.text = playerCombatManager.listOfVerticalAngles[tankNum].ToString();
     }
 
+    // while player is in weapon configuration (update)
     public void UpdateWeaponConfiguration()
     {
         playerCombatManager.power = (int)powerSlider.value;
