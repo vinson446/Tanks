@@ -7803,13 +7803,16 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 775956662}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bac68b8a464ddfb479cc57807d63002d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   rotatableBody: {fileID: 1422759120}
   rotatableTurret: {fileID: 241041189}
+  madeAction: 0
+  reset: 0
+  resetRotation: {x: 0, y: 0, z: 0, w: 1}
 --- !u!114 &775956665
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14580,13 +14583,16 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1359793997}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bac68b8a464ddfb479cc57807d63002d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   rotatableBody: {fileID: 829555478}
   rotatableTurret: {fileID: 1605287390}
+  madeAction: 0
+  reset: 0
+  resetRotation: {x: 0, y: 0, z: 0, w: 1}
 --- !u!114 &1359794000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14958,13 +14964,16 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1404399684}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bac68b8a464ddfb479cc57807d63002d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   rotatableBody: {fileID: 1720187851}
   rotatableTurret: {fileID: 493824506}
+  madeAction: 0
+  reset: 0
+  resetRotation: {x: 0, y: 0, z: 0, w: 1}
 --- !u!114 &1404399689
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24026,8 +24035,6 @@ MonoBehaviour:
   - ghi
   listOfPowers: 000000000000000000000000
   listOfMaxPowers: 320000003200000032000000
-  listOfHorizontalAngles: 000000000000000000000000
-  listOfVerticalAngles: 000000000000000000000000
   weaponDamages: 0a0000000a0000000a000000
   weaponPowerCosts: 190000001900000019000000
   bulletLanded: 0

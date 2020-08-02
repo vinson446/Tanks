@@ -64,11 +64,13 @@ public class GameDisplay : MonoBehaviour
         powerSlider.value = 0;
         powerText.text = "0";
 
-        horizontalAngleSlider.value = playerCombatManager.listOfHorizontalAngles[tankNum];
-        horizontalAngleText.text = playerCombatManager.listOfHorizontalAngles[tankNum].ToString();
+        horizontalAngleSlider.value = 0;
+        horizontalAngleText.text = "0";
 
-        verticalAngleSlider.value = playerCombatManager.listOfVerticalAngles[tankNum];
-        verticalAngleText.text = playerCombatManager.listOfVerticalAngles[tankNum].ToString();
+        verticalAngleSlider.value = 0;
+        verticalAngleText.text = "0";
+
+        playerCombatManager.aimingScripts[playerCombatManager.currentTank].enabled = true;
     }
 
     // while player is in weapon configuration (update)

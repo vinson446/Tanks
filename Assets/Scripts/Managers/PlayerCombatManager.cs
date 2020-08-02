@@ -22,8 +22,6 @@ public class PlayerCombatManager : MonoBehaviour
     public string[] listOfWeaponNames;
     public int[] listOfPowers;
     public int[] listOfMaxPowers;
-    public int[] listOfHorizontalAngles;
-    public int[] listOfVerticalAngles;
 
     [Header("Weapon Details")]
     public int[] weaponDamages;
@@ -49,23 +47,9 @@ public class PlayerCombatManager : MonoBehaviour
         // get new tank details
         currentTank = index;
 
-        for (int i = 0; i < aimingScripts.Length; i++)
-        {
-            if (i == index)
-            {
-                aimingScripts[i].enabled = true;
-            }
-            else
-            {
-                aimingScripts[i].enabled = false;
-            }
-        }
-
         weapon = listOfWeaponNames[index];
         power = listOfPowers[index];
         maxPower = listOfMaxPowers[index];
-        horizontalAngle = listOfHorizontalAngles[index];
-        verticalAngle = listOfVerticalAngles[index];
     }
 
     public void Attack()
@@ -76,15 +60,15 @@ public class PlayerCombatManager : MonoBehaviour
         maxPower -= weaponPowerCosts[currentTank];
         listOfMaxPowers[currentTank] = maxPower;
 
-        listOfHorizontalAngles[currentTank] = (int)gameDisplay.horizontalAngleSlider.value;
-        listOfVerticalAngles[currentTank] = (int)gameDisplay.verticalAngleSlider.value;
-
         // frontend
         StartCoroutine(AllyAttackCoroutine());
     }
 
     IEnumerator AllyAttackCoroutine()
     {
+        // stop setting tank aim to ui slider values
+        aimingScripts[currentTank].madeAction = true;
+
         yield return new WaitForSeconds(1);
 
         GameObject bullet = Instantiate(weapons[currentTank], weaponSpawnpoints[currentTank].position, Quaternion.Euler(new Vector3(90, 0, 0)));
@@ -103,6 +87,9 @@ public class PlayerCombatManager : MonoBehaviour
 
         // when bullet collides with something, wait x seconds, then change bulletLanded = true
         yield return new WaitForSeconds(3);
+
+        // reset tank aiming
+        aimingScripts[currentTank].reset = true;
 
         cameraManager.LookAtGameWorld();
 
@@ -125,11 +112,12 @@ public class PlayerCombatManager : MonoBehaviour
         }
 
         listOfMaxPowers[currentTank] = maxPower;
-        listOfHorizontalAngles[currentTank] = (int)gameDisplay.horizontalAngleSlider.value;
-        listOfVerticalAngles[currentTank] = (int)gameDisplay.verticalAngleSlider.value;
 
         // frontend
 
+        // reset tank aiming
+        aimingScripts[currentTank].madeAction = true;
+        aimingScripts[currentTank].reset = true;
 
         turnManager.AllyUnitEndTurn(currentTank);
         cameraManager.LookAtGameWorld();
