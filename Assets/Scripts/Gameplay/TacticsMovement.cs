@@ -13,6 +13,9 @@ public class TacticsMovement : MonoBehaviour
     public int moveSpaces = 5;
     public float moveSpeed;
 
+    // focus cam
+    public int focusCamIndex;
+
     Tile currentTile;
     List<Tile> selectableTiles = new List<Tile>();
     Stack<Tile> path = new Stack<Tile>();

@@ -15,7 +15,8 @@ public class EnemyCombat : MonoBehaviour
     [Header("Inventory")]
     public GameObject weapon;
     public Transform weaponSpawnpoint;
-    public int projectileSpeed;
+    public int minProjectileSpeed;
+    public int maxProjectileSpeed;
 
     [Header("UI")]
     public HealthBar hpBar;
@@ -103,23 +104,27 @@ public class EnemyCombat : MonoBehaviour
     {
         hasAttacked = true;
 
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(2);
 
         // could do a raycast, if distance from this enemy to closest ally target is blocked by an obstacle, shoot weapon at an upwards angle (random)
 
         GameObject bullet = Instantiate(weapon, weaponSpawnpoint.position, Quaternion.Euler(new Vector3(90, 0, 0)));
 
         Rigidbody rb = bullet.GetComponent<Rigidbody>();
-        rb.AddForce(-weaponSpawnpoint.transform.forward * projectileSpeed);
+        rb.AddForce(-weaponSpawnpoint.transform.forward * Random.Range(minProjectileSpeed, maxProjectileSpeed + 1));
 
         Bullet b = bullet.GetComponent<Bullet>();
         b.damage = damage;
+        b.SetEnemyFlag(this);
 
         // camera shift to bullet
-        cameraManager.FocusOnTarget(bullet.transform);
+        cameraManager.FocusOnAttack(bullet.transform);
+
+        while (!bulletLanded)
+            yield return null;
 
         // when bullet collides with something, wait x seconds, then change bulletLanded = true
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(3);
 
         cameraManager.LookAtGameWorld();
 

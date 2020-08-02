@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
+    public bool isAllyBullet = false;
     public bool hitSomething;
     public int damage;
 
@@ -11,6 +12,7 @@ public class Bullet : MonoBehaviour
     Quaternion initialRot;
 
     PlayerCombatManager playerCombatManager;
+    EnemyCombat enemyCombatManager;
     CameraManager cameraManager;
 
     // Start is called before the first frame update
@@ -20,10 +22,11 @@ public class Bullet : MonoBehaviour
 
         initialRot = transform.rotation;
 
-        playerCombatManager = FindObjectOfType<PlayerCombatManager>();
+        if (isAllyBullet)
+            playerCombatManager = FindObjectOfType<PlayerCombatManager>();
         cameraManager = FindObjectOfType<CameraManager>();
 
-        Destroy(gameObject, 5);
+        Invoke("Rip", 5);
     }
 
     // Update is called once per frame
@@ -42,10 +45,14 @@ public class Bullet : MonoBehaviour
         coll.enabled = false;
         MeshRenderer mr = GetComponent<MeshRenderer>();
         mr.enabled = false;
-        cameraManager.FocusOnTarget(null);
+        cameraManager.attackCam.GetComponent<FollowCam>().target = null;
 
         hitSomething = true;
-        playerCombatManager.bulletLanded = true;
+        if (isAllyBullet)
+            playerCombatManager.bulletLanded = true;
+        else
+            enemyCombatManager.bulletLanded = true;
+        
 
         Destroy(gameObject, 3);
 
@@ -59,5 +66,27 @@ public class Bullet : MonoBehaviour
             PlayerCombat ally = collision.gameObject.GetComponent<PlayerCombat>();
             ally.TakeDamage(damage);
         }
+    }
+
+    public void SetEnemyFlag(EnemyCombat enemy)
+    {
+        enemyCombatManager = enemy;
+    }
+
+    void Rip()
+    {
+        Collider coll = GetComponent<Collider>();
+        coll.enabled = false;
+        MeshRenderer mr = GetComponent<MeshRenderer>();
+        mr.enabled = false;
+        cameraManager.attackCam.GetComponent<FollowCam>().target = null;
+
+        hitSomething = true;
+        if (isAllyBullet)
+            playerCombatManager.bulletLanded = true;
+        else
+            enemyCombatManager.bulletLanded = true;
+
+        Destroy(gameObject, 3);
     }
 }

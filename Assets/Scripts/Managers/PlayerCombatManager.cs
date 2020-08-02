@@ -74,13 +74,16 @@ public class PlayerCombatManager : MonoBehaviour
         GameObject bullet = Instantiate(weapons[currentTank], weaponSpawnpoints[currentTank].position, Quaternion.Euler(new Vector3(90, 0, 0)));
 
         Rigidbody rb = bullet.GetComponent<Rigidbody>();
+        // multiplier = 15, base = 100
+        // force: 100 - 500
         rb.AddForce(-weaponSpawnpoints[currentTank].transform.forward * (gameDisplay.powerSlider.value * powerMultiplier + basePower));
 
         Bullet b = bullet.GetComponent<Bullet>();
+        b.isAllyBullet = true;
         b.damage = weaponDamages[currentTank];
 
         // camera shift to bullet
-        cameraManager.FocusOnTarget(bullet.transform);
+        cameraManager.FocusOnAttack(bullet.transform);
 
         while (!bulletLanded)
             yield return null;

@@ -5,8 +5,13 @@ using Cinemachine;
 
 public class CameraManager : MonoBehaviour
 {
+    [Header("Cameras")]
     public GameObject gameCamera;
-    public GameObject focusCamera;
+    public GameObject[] focusCams;
+    public int currentCam;
+    public GameObject attackCam;
+
+    [Header("Cam Fiddly Details")]
     public float cameraMovementDivider;
 
     public float xMinBounds;
@@ -47,16 +52,46 @@ public class CameraManager : MonoBehaviour
     public void LookAtGameWorld()
     {
         gameCamera.SetActive(true);
-        focusCamera.SetActive(false);
+
+        foreach (GameObject o in focusCams)
+            o.SetActive(false);
+        attackCam.SetActive(false);
     }
 
     public void FocusOnTarget(Transform target)
     {
+        /*
         gameCamera.SetActive(false);
         focusCamera.SetActive(true);
 
         focusCamera.GetComponent<CinemachineVirtualCamera>().LookAt = target;
         focusCamera.GetComponent<CinemachineVirtualCamera>().Follow = target;
+        */
+
+        gameCamera.SetActive(false);
+        foreach (GameObject c in focusCams)
+        {
+            c.SetActive(false);
+        }
+        attackCam.SetActive(false);
+
+        TacticsMovement lookAtTarget = target.gameObject.GetComponent<TacticsMovement>();
+        focusCams[lookAtTarget.focusCamIndex].SetActive(true);
+        currentCam = lookAtTarget.focusCamIndex;
+    }
+
+    public void FocusOnAttack(Transform target)
+    {
+        gameCamera.SetActive(false);
+
+        attackCam.transform.position = focusCams[currentCam].transform.position;
+
+        focusCams[currentCam].SetActive(false);
+
+        FollowCam cam = attackCam.GetComponent<FollowCam>();
+        cam.target = target.gameObject;
+
+        attackCam.gameObject.SetActive(true);
     }
 
     void CameraControlsForGeneralGameplay()
