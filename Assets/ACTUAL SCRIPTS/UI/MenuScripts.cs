@@ -5,7 +5,7 @@ using UnityEditor;
 
 public class MenuScripts
 {
-    [MenuItem("Tools/Assign Tile Script")]
+    //[MenuItem("Tools/Assign Tile Script")]
     public static void AssignTileScript()
     {
         GameObject[] tiles = GameObject.FindGameObjectsWithTag("Tile");

@@ -6,7 +6,8 @@ using TMPro;
 
 public class GameDisplay : MonoBehaviour
 {
-    bool isInActionsPanel = false;
+    // todo (set to false)
+    public bool isInActionsPanel = false;
 
     [Header("UI References")]
     public GameObject actionsPanel;
@@ -28,6 +29,7 @@ public class GameDisplay : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // todo
         TurnOffUnitActions();
 
         playerCombatManager = FindObjectOfType<PlayerCombatManager>();
@@ -76,6 +78,7 @@ public class GameDisplay : MonoBehaviour
     // while player is in weapon configuration (update)
     public void UpdateWeaponConfiguration()
     {
+        /* todo */
         playerCombatManager.power = (int)powerSlider.value;
         playerCombatManager.horizontalAngle = (int)horizontalAngleSlider.value;
         playerCombatManager.verticalAngle = (int)verticalAngleSlider.value;
