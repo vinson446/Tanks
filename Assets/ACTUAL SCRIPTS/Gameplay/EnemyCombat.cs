@@ -115,6 +115,7 @@ public class EnemyCombat : MonoBehaviour
 
         Bullet b = bullet.GetComponent<Bullet>();
         b.damage = damage;
+        b.timer = 5;
         b.SetEnemyFlag(this);
 
         // camera shift to bullet

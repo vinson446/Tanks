@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 6640369568492984287}
   - component: {fileID: 6640369568492984286}
   - component: {fileID: 6636631313403993900}
-  - component: {fileID: 7644517618371454894}
+  - component: {fileID: 3643722868318515889}
   m_Layer: 0
-  m_Name: Test Bullet
+  m_Name: SkyStrike Missile
   m_TagString: Bullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -112,7 +112,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &7644517618371454894
+--- !u!114 &3643722868318515889
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -121,9 +121,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6640369568492984285}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 92b4a1f4f22364b4ebe033ea7f189478, type: 3}
+  m_Script: {fileID: 11500000, guid: 986098fcf28ca6d409e09bbe385558fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isAllyBullet: 0
   hitSomething: 0
-  damage: 0

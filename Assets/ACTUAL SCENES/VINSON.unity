@@ -6941,7 +6941,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 661648810}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -1.53}
+  m_LocalPosition: {x: 0, y: 0.65000004, z: -1.6899998}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 954825742}
@@ -11141,6 +11141,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0afc180ed2bfcc84bbcf0785e1e024bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isInActionsPanel: 0
   actionsPanel: {fileID: 1455536365}
   weaponNameText: {fileID: 1735918984}
   powerSlider: {fileID: 1434489422}
@@ -11945,7 +11946,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1077264890}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -1.530001}
+  m_LocalPosition: {x: 0, y: 0.65000004, z: -1.6900009}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2062817551}
@@ -15415,7 +15416,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1398575343}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -1.5300007}
+  m_LocalPosition: {x: 0, y: 0.65, z: -1.69}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 945210507}
@@ -25633,9 +25634,9 @@ MonoBehaviour:
   - {fileID: 1420189256}
   - {fileID: 379609557}
   listOfWeaponNames:
-  - BIG BULLET
-  - ROCKET LAUNCHER
-  - HEALER
+  - SKY STRIKE
+  - SKY STRIKE
+  - SKY STRIKE
   listOfPowers: 000000000000000000000000
   listOfMaxPowers: 640000006400000064000000
   weaponDamages: 0a0000000a0000000a000000
